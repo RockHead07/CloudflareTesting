@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Remote Print Upload</title>
+</head>
+<body>
+
+<h2>Upload PDF</h2>
+
+<input type="file" id="file" accept="application/pdf">
+<button onclick="upload()">Upload</button>
+
+<button onclick="cekStatus()">Cek Status</button>
+<p id="status"></p>
+
+<script>
+let lastJobId = null;
+
+function upload() {
+  const input = document.getElementById("file");
+  const file = input.files[0];
+
+  if (!file) {
+    alert("Pilih PDF dulu");
+    return;
+  }
+
+  const data = new FormData();
+  data.append("file", file);
+
+  fetch("upload.php", {
+    method: "POST",
+    body: data
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.status === "ok") {
+      lastJobId = res.job_id;
+      alert("Upload sukses! Job ID: " + lastJobId);
+
+      // RESET
+      input.value = "";
+      document.getElementById("status").innerText = "";
+    } else {
+      alert("Gagal: " + res.error);
+    }
+  })
+  .catch(() => alert("Server error"));
+}
+
+function cekStatus() {
+  if (!lastJobId) {
+    alert("Belum ada job");
+    return;
+  }
+
+  fetch("status.php?job_id=" + lastJobId)
+    .then(r => r.json())
+    .then(res => {
+      if (res.status === "ok") {
+        document.getElementById("status").innerText =
+          "Status: " + res.data.status;
+      } else {
+        alert(res.message);
+      }
+    });
+}
+</script>
+
+
+
+</body>
+</html>
