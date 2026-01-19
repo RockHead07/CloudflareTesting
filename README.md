@@ -2,7 +2,7 @@
 > ## Read Cautiously! 
 > This project should have the flows consist of all of this:
 
-``pgsql
+```pgsql
 User
  └─ Upload PDF
      └─ Create Print Job (PENDING)
@@ -15,4 +15,4 @@ User
                                  └─ Printer Daemon Polling
                                      └─ Print
                                          └─ Update Job → DONE
-``
+```
