@@ -1,6 +1,6 @@
 > [!WARNING]
 > ## Read Cautiously! 
-> This project should have the flows consist of all of this:
+> This project should have the flows consist all of this:
 
 ```pgsql
 User
